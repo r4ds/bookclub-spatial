@@ -1,4 +1,4 @@
-# {{{chapter_title}}}
+# Spatial econometrics models
 
 **Learning objectives:**
 
