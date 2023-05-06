@@ -2,12 +2,291 @@
 
 **Learning objectives:**
 
-- THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+- Describe simple features (point, line, polygon geometries),
+- describe operations with simple features,
+- describe coverages, functions of space or space-time, 
+- describe tesselations, subdivisions, networks.
 
-## SLIDE 1 {-}
+## Simple feature geometries {-}
 
-- ADD SLIDES AS SECTIONS (`##`).
-- TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+- Simple features (sf) are `things` that have a geometry, some time properties, and other attributes describing said things (e.g., labels).
+- Everything is a sequence of points and lines! *Hence simple.* 
+
+### The big seven sf
+
+- point: single point geometry. `st_point()`, `st_multipoint()`
+- linestring: two or more points connected by straight lines. `st_linestring()`, `st_multilinestring()`
+- polygon: exterior ring with zero or more inner rings. `st_polygon()`, `st_multipolygon()`
+- geometrycollection: list of geometries. `st_geometrycollection(list())`
+
+```{r, echo=FALSE}
+library(sf) |> suppressPackageStartupMessages()
+par(mfrow = c(2,4))
+par(mar = c(1,1,1.2,1))
+
+# 1
+p <- st_point(0:1)
+plot(p, pch = 16)
+title("point")
+box(col = 'grey')
+
+# 2
+mp <- st_multipoint(rbind(c(1,1), c(2, 2), c(4, 1), c(2, 3), c(1,4)))
+plot(mp, pch = 16)
+title("multipoint")
+box(col = 'grey')
+
+# 3
+ls <- st_linestring(rbind(c(1,1), c(5,5), c(5, 6), c(4, 6), c(3, 4), c(2, 3)))
+plot(ls, lwd = 2)
+title("linestring")
+box(col = 'grey')
+
+# 4
+mls <- st_multilinestring(list(
+  rbind(c(1,1), c(5,5), c(5, 6), c(4, 6), c(3, 4), c(2, 3)),
+  rbind(c(3,0), c(4,1), c(2,1))))
+plot(mls, lwd = 2)
+title("multilinestring")
+box(col = 'grey')
+
+# 5 polygon
+po <- st_polygon(list(rbind(c(2,1), c(3,1), c(5,2), c(6,3), c(5,3), c(4,4), c(3,4), c(1,3), c(2,1)),
+    rbind(c(2,2), c(3,3), c(4,3), c(4,2), c(2,2))))
+plot(po, border = 'black', col = '#ff8888', lwd = 2)
+title("polygon")
+box(col = 'grey')
+
+# 6 multipolygon
+mpo <- st_multipolygon(list(
+    list(rbind(c(2,1), c(3,1), c(5,2), c(6,3), c(5,3), c(4,4), c(3,4), c(1,3), c(2,1)),
+        rbind(c(2,2), c(3,3), c(4,3), c(4,2), c(2,2))),
+    list(rbind(c(3,7), c(4,7), c(5,8), c(3,9), c(2,8), c(3,7)))))
+plot(mpo, border = 'black', col = '#ff8888', lwd = 2)
+title("multipolygon")
+box(col = 'grey')
+
+# 7 geometrycollection
+gc <- st_geometrycollection(list(po, ls + c(0,5), st_point(c(2,5)), st_point(c(5,4))))
+plot(gc, border = 'black', col = '#ff6666', pch = 16, lwd = 2)
+title("geometrycollection")
+box(col = 'grey')
+```
+
+### Valid geometries 
+
+- Linestrings do not self-intersect.   
+- Valid polygons and multi-polygons:  
+  - polygon rings are closed
+  - polygon holes inside exterior ring   
+  - polygon inner rings touch exterior ring in single points (not line)
+  - polygon ring does not repeat its own path  
+  - multi-polygon: external ring touches other exterior ring in single points (not line)  
+  
+- Invalid geometries can be repaired! 
+
+## Z and M coordinates {-}
+
+- sf have x and y coordinates (x,y)  
+- additionally, they can have  
+  - `z` coordinate (altitude)  
+  - `m` value for some 'measure'.   
+  
+## Empty geometries {-}
+
+- arise naturally with geometrical operations
+- vanish when we include non-empty geometries 
+
+```{r}
+library(sf) |> suppressPackageStartupMessages()
+p1 <- st_point(c(0,0))
+p2 <- st_point(c(1,1))
+(e <- st_intersection(p1, p2))
+
+```
+
+#### Example of non-empty when using `st_intersect()` {-}
+
+```{r, echo=FALSE}
+library(sf) |> suppressPackageStartupMessages()
+m = rbind(c(0,0), c(1,0), c(1,1), c(0,1), c(0,0))
+p = st_polygon(list(m))
+l <-  vector("list", 10)
+for (i in 1:10)
+  l[[i]] = p + 10 * runif(2)
+s = st_sfc(l)
+plot(s)
+```
+
+```{r}
+i <- st_intersection(s)
+str(i)
+```
+
+## Ten additional geometry types {-}
+
+- `CIRCULARSTRING`
+- `COMPOUNDCURVE`
+- `CURVEPOLYGON`
+- `MULTICURVE`
+- `MULTISURFACE`
+- `CURVE`
+- `SURFACE`
+- `POLYHEDRALSURFACE`
+- `TIN`
+- `TRIANGLE`
+
+## Operations on geometries {-}
+
+We can categorise operations on geometries in terms of what they take as input and what they return as output: 
+  - predicates: a logical for a property `TRUE`  
+  - measures  
+  - transformations: newly generated geometries   
+
+In terms of what they operate on:   
+  - **unary:** work on a single geometry  
+    - `is_simple()`  
+    - `is_valid()`  
+    - `is_empty()`  
+    - `is_longlat()`  
+    - `is(geometry, class)`  
+  - **binary:** work on pairs of geometries   
+  - **n-ary:** work on sets of geometries  
+
+## Unary {-}
+
+### Unary measures {-}
+
+Describes a property of the geometry:   
+  - dimension,   
+  - area,   
+  - length   
+  
+### Unary transformers {-}
+
+Transformations work on a per-geometry basis. Return for each geometry a new geometry. 
+
+|transformer                  |returns a geometry ...                                                            |
+|-----------------------------|----------------------------------------------------------------------------------|
+|`centroid`|of type `POINT` with the geometry's centroid|
+|`buffer`|that is larger (or smaller) than the input geometry, depending on the buffer size|
+|`jitter` |that was moved in space a certain amount, using a bivariate uniform distribution|
+|`wrap_dateline`|cut into pieces that no longer cover or cross the dateline|
+|`boundary`|with the boundary of the input geometry|
+|`convex_hull`|that forms the convex hull of the input geometry (@fig-vor) |
+|`line_merge`|after merging connecting `LINESTRING` elements of a `MULTILINESTRING` into longer `LINESTRING`s.|
+|`make_valid`|that is valid |
+|`node`|with added nodes to linear geometries at intersections without a node; only works on individual linear geometries|
+|`point_on_surface`|with a (arbitrary) point on a surface|
+|`polygonize`|of type polygon, created from lines that form a closed ring|
+|`segmentize`|a (linear) geometry with nodes at a given density or minimal distance|
+|`simplify`|simplified by removing vertices/nodes (lines or polygons)|
+|`split`|that has been split with a splitting linestring|
+|`transform`|transformed or convert to a new coordinate reference system (@sec-cs)|
+|`triangulate`|with Delauney triangulated polygon(s) (@fig-vor) |
+|`voronoi`|with the Voronoi tessellation of an input geometry (@fig-vor) |
+|`zm`|with removed or added `Z` and/or `M` coordinates|
+|`collection_extract`|with sub-geometries from a `GEOMETRYCOLLECTION` of a particular type|
+|`cast`|that is converted to another type|
+|`+`|that is shifted over a given vector|
+|`*`|that is multiplied by a scalar or matrix|
+
+```{r fig-vor, echo = !knitr::is_latex_output()}
+#| fig.cap: "For a set of points, left: convex hull (red); middle: Voronoi polygons; right: Delauney triangulation"
+#| code-fold: true
+#| out.width: 60%
+par(mar = rep(0,4), mfrow = c(1, 3))
+set.seed(133331)
+mp <- st_multipoint(matrix(runif(20), 10))
+plot(mp, cex = 2)
+plot(st_convex_hull(mp), add = TRUE, col = NA, border = 'red')
+box()
+plot(mp, cex = 2)
+plot(st_voronoi(mp), add = TRUE, col = NA, border = 'red')
+box()
+plot(mp, cex = 2)
+plot(st_triangulate(mp), add = TRUE, col = NA, border = 'darkgreen')
+box()
+```
+
+## Binary {-}
+
+### Binary predicates {-}
+
+|predicate                     |meaning                                                          |inverse of      |
+|------------------------------|-----------------------------------------------------------------|----------------|
+|`contains`                    |None of the points of A are outside B| `within`|
+|`contains_properly`           |A contains B and B has no points in common with the boundary of A| |
+|`covers`                      |No points of B lie in the exterior of A| `covered_by`|
+|`covered_by`                  |Inverse of `covers`| |
+|`crosses`                     |A and B have some but not all interior points in common| |
+|`disjoint`                    |A and B have no points in common| `intersects`|
+|`equals`                      |A and B are topologically equal: node order or number of nodes may differ; identical to A contains B and A within B|
+|`equals_exact`                |A and B are geometrically equal, and have identical node order| |
+|`intersects`                  |A and B are not disjoint| `disjoint`|
+|`is_within_distance`          |A is closer to B than a given distance|
+|`within`                      |None of the points of B are outside A| `contains`|
+|`touches`                     |A and B have at least one boundary point in common, but no interior points|  |
+|`overlaps`                    |A and B have some points in common; the dimension of these is identical to that of A and B|  |
+|`relate`                      |Given a mask pattern, return whether A and B adhere to this pattern| |
+
+### Binary measures {-}
+
+- `distance`: returns distance between geometries 
+
+### Binary transformers {-}
+
+Transformations that work on pair of geometries and return a new geometry. 
+
+|function           |returns                                                    |infix operator|
+|-------------------|-----------------------------------------------------------|:------------:|
+|`intersection`     |the overlapping geometries for pair of geometries          |`&`|
+|`union`            |the combination of the geometries; removes internal boundaries and duplicate points, nodes or line pieces|`|`|
+|`difference`       |the geometries of the first after removing the overlap with the second geometry|`/`|
+|`sym_difference`   |the combinations of the geometries after removing where they intersect; the negation (opposite) of `intersection`|`%/%`|
+
+## N-aray {-}
+### N-aray transformers {-}
+
+Transformations done on sets of geometries:  
+  - `union`
+    - any set of geometries can be combined into a multi-type geometry when they have equal dimensions, or a geometry collection. It's recommended to use union to combining.  
+  - `intersection` and `difference` operate sequentially on all geometries. Example of intersection: 
+  
+```{r, echo = FALSE}
+#| code-fold: true
+#| out.width: 50%
+#| fig.cap: "Left: three overlapping squares -- how do we identify the small box where all three overlap? Right: unique, non-overlapping n-ary intersections"
+par(mar = rep(.1, 4), mfrow = c(1, 2))
+sq <- function(pt, sz = 1) st_polygon(list(rbind(c(pt - sz), 
+  c(pt[1] + sz, pt[2] - sz), c(pt + sz), c(pt[1] - sz, pt[2] + sz), c(pt - sz))))
+x <- st_sf(box = 1:3, st_sfc(sq(c(0, 0)), sq(c(1.7, -0.5)), sq(c(0.5, 1))))
+plot(st_geometry(x), col = NA, border = sf.colors(3, categorical = TRUE), lwd = 3)
+p <- st_intersection(st_geometry(x), col = sf.colors(7, categorical=TRUE, alpha = .5))
+p
+plot(st_intersection(st_geometry(x)), col = sf.colors(7, categorical=TRUE, alpha = .5))
+```
+
+## Tesselations and rasters {-}
+
+For every space time 'point', every combination of spatial point and amoment in time of the spatiotemporal domain, we have a *single* value for the range.  
+
+Topological models: data model that guarantees no inadvertent gaps or overlaps of polygonal coverage. They store boundaries between polygons only once and register which polygonal area is on either side of the boundary. It's best to work with a topological model and derive a set of multipolygons instead of reconstructing topolgy. 
+
+### Tesselations {-}
+
+A sub-division of a space (area, volume) into smaller elements by ways of polygons (triangles, squares, hexagons).  
+
+Rasters are examples of tesselations using squares. 
+
+## Networks {-}
+
+Spatial networks are usually composed of linear elements (`LINESTRING`).   
+  - start- and end-points of a linestring may be connected o toher linestring start- or end-points: nodes and edges.   
+  - edges may be directed to flow in one way.  
+  
+
+
 
 ## Meeting Videos {-}
 
