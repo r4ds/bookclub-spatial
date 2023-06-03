@@ -9,6 +9,7 @@ Depends:
     R (>= 3.1.0)
 Imports: 
     bookdown,
+    colorspace,
     dplyr,
     ggplot2,
     maps,
@@ -16,5 +17,6 @@ Imports:
     rnaturalearth,
     rnaturalearthdata,
     s2,
-    sf
+    sf,
+    stars
 Encoding: UTF-8
