@@ -10,13 +10,21 @@ Depends:
 Imports: 
     bookdown,
     colorspace,
+    cubelyr,
     dplyr,
     ggplot2,
     maps,
+    MASS,
     rmarkdown,
     rnaturalearth,
     rnaturalearthdata,
     s2,
     sf,
-    stars
+    spDataLarge,
+    stars,
+    tidyr,
+    units,
+    xts
+Remotes:
+    Nowosad/spDataLarge
 Encoding: UTF-8
