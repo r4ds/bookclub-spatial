@@ -25,4 +25,6 @@ Imports:
     tidyr,
     units,
     xts
+Remotes:
+    Nowosad/spDataLarge
 Encoding: UTF-8
