@@ -6,15 +6,18 @@ Authors@R:
 URL: https://r4ds.github.io/bookclub-spatial,
     https://github.com/r4ds/bookclub-spatial
 Depends:
-    R (>= 3.1.0)
+    R (>= 3.1.0),
+    tidyverse
 Imports: 
     bookdown,
+    class,
     colorspace,
     cubelyr,
     dplyr,
     ggplot2,
     maps,
     MASS,
+    randomForest,
     rmarkdown,
     rnaturalearth,
     rnaturalearthdata,

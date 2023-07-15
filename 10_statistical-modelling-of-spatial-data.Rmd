@@ -2,12 +2,431 @@
 
 **Learning objectives:**
 
-- THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+- quantifying relationships between variables
+- predicting the outcome of observations
+- applying a model-based approach
 
-## SLIDE 1 {-}
 
-- ADD SLIDES AS SECTIONS (`##`).
-- TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+
+## Mapping with non-spatial regression and ML models
+
+Let's start with loading the **North Carolina SIDS data** - `nc` spatial data.
+
+```{r message=FALSE,warning=FALSE}
+library(tidyverse)
+library(sf)
+```
+
+
+```{r}
+nc <- system.file("gpkg/nc.gpkg", package="sf") |>
+  read_sf() 
+```
+
+It contains information about **100 counties of North Carolina**, and includes **counts of numbers of live births** (also non-white live births) and **numbers of sudden infant deaths**, for the July 1, 1974 to June 30, 1978 and July 1, 1979 to June 30, 1984 periods. 
+We are interested in:
+
+- Sudden Infant Death Syndrome, 1974-78 (SIDS)
+- Live births, 1974-78 (BIR74)
+- Non-white births, 1974-78 (NWBIR74)
+
+Useful Resources: 
+
+- Data description: <https://geodacenter.github.io/data-and-lab/sids/>
+- Vignette: <https://r-spatial.github.io/spdep/articles/sids.html>
+- More datasets: <https://geodacenter.github.io/data-and-lab/>
+
+
+```{r}
+nc %>% names
+```
+
+
+```{r}
+nc %>%
+  select(SID74, BIR74, NWBIR74) %>%
+  head
+```
+
+This type of data can be manipulated as needed to make the model analysis.
+
+```{r}
+nc1 <- nc |> mutate(SID = SID74 / BIR74, NWB = NWBIR74 / BIR74)
+
+nc1 %>% select(SID, NWB) %>% head
+```
+
+Making a model with spatial data is as the same as with dealing with dataframes. 
+
+$$\text{observed = explainer + remainder}$$
+
+$$Y= (\beta_0+\beta_1x) +\epsilon$$
+
+The first step is to apply a linear regression model to our spatial data.
+
+```{r}
+fit <- lm(SID ~ NWB, nc1)
+broom::tidy(fit)
+```
+
+The result of the `prediction()` function releases the `fit`, `lwr` and `upr` vectors.
+
+```{r}
+pr <- fit %>%
+  predict(nc1, interval = "prediction")
+
+bind_cols(nc, pr) |> names()
+```
+
+Cross-validation techniques can be applied taking consideration of the spatial data autocorrelation, which is mostly due to proximity of spatial points or locations with same structure. Due to this, classical methods of applying cross-validation on spatial data might lead to overestimating results, in order to overcome this more specialized cross-validation techinques have been provided to deal well with spatial data, such as:
+
+-  [spatialsample](https://spatialsample.tidymodels.org/) (Silge and Mahoney 2023)
+- [CAST](https://cran.r-project.org/web/packages/CAST/vignettes/cast01-CAST-intro.html) (Meyer, Milà, and Ludwig 2023)
+- [mlr3spatial](https://mlr3spatial.mlr-org.com/) (Becker and Schratz 2022) 
+- [mlr3spatiotempcv](https://mlr3spatiotempcv.mlr-org.com/articles/mlr3spatiotempcv.html) (Schratz and Becker 2022)
+
+
+
+
+## Support and statistical modelling
+
+Support of data plays a lead role in the statistical analysis of spatial data:
+
+- a `constant` value for every point of the geometry
+- a single value that is an `aggregate` over all points of the geometry
+- a value that is unique to only this geometry, describing its `identity`
+
+
+
+## Time in predictive models
+
+Statistical analysis of spatiotemporal data proceeds either by:
+
+- reducing time, then working on the problem spatially (time first, space later) 
+- reducing space, then working on the problem temporally (space first, time later)
+
+## Design-based and model-based inference
+
+> Statistical inference means the action of estimating parameters about a population from sample data. 
+
+Two possibilities to proceed: 
+
+- model-based (assumes a superpopulation model)
+- design-based (assumes randomness in the locations - unweighted sample mean is used to estimate the population mean, and no model parameters need to be fit)
+
+The model-based is best for:
+
+- predictions are required for small areas to be sampled
+- available data were not collected randomly
+
+Design-based is best for:
+
+- observations were collected using a spatial random sampling process
+- needs for data aggregation
+- not sensitive estimates, i.e. for regulatory or legal purposes
+
+
+## Predictive models with coordinates
+
+- models should also not be sensitive to arbitrary rotations of the land or latitude
+- assume sample data to be independent
+- allow for spatial and/or temporal autocorrelation of residuals (Adaptive cross-validation measures such as spatial cross-validation may help getting more relevant measures for predictive performance.)
+
+## Exercises
+
+## Exercise 1
+
+Use a `random forest model` to predict SID values (e.g. using package randomForest), and plot the random forest predictions against observations, along with the line.
+```{r}
+library(randomForest) |> suppressPackageStartupMessages()
+```
+
+
+```{r}
+r = randomForest(SID ~ NWB, nc1)
+```
+
+
+```{r}
+nc1$rf = predict(r)
+```
+
+```{r}
+nc2 <- nc1%>%
+  select(SID,rf)
+
+nc2%>%head
+```
+
+```{r}
+nc2 %>%
+  ggplot(aes(SID,rf))+
+  geom_point(shape=21,stroke=0.5)+
+  geom_abline()
+```
+
+### Exercise 2
+
+Create a new dataset by randomly sampling 1000 points from the nc dataset, and rerun the linear regression model of section 10.2 on this dataset. What has changed?
+
+```{r}
+pts = st_sample(nc, 1000)
+nc3 = st_intersection(nc1, pts)
+```
+
+ 
+```{r}
+fit |> summary()
+```
+ 
+ 
+```{r}
+fit2 <- lm(SID ~ NWB, nc3) 
+
+fit2|> summary()
+```
+> the standard error has decreased with a factor 3 (sqrt(10))
+
+
+```{r}
+lm(SID ~ NWB, nc1) |>
+  predict(nc1, interval = "prediction") -> pr1
+lm(SID ~ NWB, nc3) |>
+  predict(nc1, interval = "prediction") -> pr2
+mean(pr1[,"upr"] - pr1[,"lwr"])
+# [1] 0.005161177
+mean(pr2[,"upr"] - pr2[,"lwr"])
+# [1] 0.004992217
+```
+
+
+
+```{r}
+lm(SID ~ NWB, nc1) |>
+  predict(nc1, interval = "confidence") -> pr1
+lm(SID ~ NWB, nc3) |>
+  predict(nc1, interval = "confidence") -> pr2
+mean(pr1[,"upr"] - pr1[,"lwr"])
+# [1] 0.0007025904
+mean(pr2[,"upr"] - pr2[,"lwr"])
+# [1] 0.000221525
+```
+
+
+
+### Exercise 3
+
+Do the `water-land classification` using `class::knn`.
+
+```{r}
+tif <- system.file("tif/L7_ETMs.tif", package = "stars")
+```
+
+
+```{r}
+library(stars)
+# r <- read_stars(tif)
+(r <- read_stars(tif))
+```
+
+```{r}
+st_bbox(r)
+```
+
+```{r}
+st_bbox(r) |> 
+  st_as_sfc()
+```
+
+```{r}
+set.seed(115517)
+pts2 <- st_bbox(r) |> 
+  st_as_sfc() |> 
+  st_sample(20)
+```
+
+
+```{r}
+(e <- st_extract(r, pts2))
+```
+
+```{r}
+r%>%class
+```
+
+```{r}
+r%>%dim
+```
+
+```{r}
+st_as_sf(e)
+```
+
+```{r}
+e_df <- st_as_sf(e) |> 
+  st_coordinates() %>%
+  as_tibble() %>%
+  mutate(label=c(1:20),
+         group=ifelse(label%in%c(8, 14, 15, 18, 19),"land","water"))
+
+e_df%>%head
+```
+
+
+```{r}
+ggplot()+
+  stars::geom_stars(data=r)+
+  geom_text(data=e_df,
+            mapping=aes(x=X,y=Y,
+                        label=label,
+                        group=group,
+                        color=group),
+            check_overlap = T,
+            inherit.aes = F)+
+  scale_color_manual(values=c("red","yellow"))+
+  coord_equal()
+```
+
+```{r}
+rs <- split(r)
+rs
+```
+
+```{r}
+trn <- rs %>%
+  st_extract(pts2)
+```
+
+```{r}
+trn$cls <- rep("land", 20)
+trn$cls[c(8, 14, 15, 18, 19)] <- "water"
+```
+
+```{r}
+library(class)
+tr <- as.data.frame(trn) |> select(X1, X2, X3, X4, X5, X6) 
+test <- as.data.frame(rs) |> select(X1, X2, X3, X4, X5, X6) 
+```
+
+
+```{r}
+rs$cls = knn(tr, test, trn$cl, k = 5)
+plot(rs["cls"])
+```
+
+### Exercise 4
+
+For the `linear model` using `nc` and for the `knn example` of the previous exercise, add a first and a second order linear model in the spatial coordinates and compare the results (use st_centroid to obtain polygon centroids, and st_coordinates to extract the x and y coordinates in matrix form).
+
+```{r}
+nc1
+```
+
+
+```{r}
+cc <- st_centroid(nc1) |> 
+  st_coordinates() 
+cc
+```
+
+
+```{r}
+# geometries
+nc4 <- bind_cols(nc1, cc) |> 
+  transmute(X=X, Y=Y, SID=SID, NWB=NWB) 
+```
+
+
+```{r}
+(lm0 <- lm(SID ~ NWB, nc1)) |> summary()
+```
+
+
+```{r}
+(lm1 <- lm(SID ~ NWB + X + Y, nc4)) |> summary()
+```
+
+
+```{r}
+(lm2 <- lm(SID ~ NWB+X+Y+ I(X^2) + I(Y^2)+ X*Y, nc4)) |> summary()
+
+```
+
+
+```{r}
+nc1$prediction_0 <- lm0 |> predict(nc4)
+nc1$prediction_1 <- lm1 |> predict(nc4)
+nc1$prediction_2 <- lm2 |> predict(nc4)
+```
+
+```{r}
+nc5 <- nc1 %>%
+  select(prediction_0,prediction_1,prediction_2) |>
+  #pivot_longer(cols = c("pr0","pr1","pr2"))%>%
+  st_as_stars() |> 
+  merge() 
+
+nc5 
+```
+
+
+```{r}
+ggplot()+
+  geom_stars(data=nc5)+
+  facet_wrap(~attributes,ncol = 1) +
+  scale_fill_viridis_c()+
+  labs(fill="")+
+  theme_void()+
+  theme(legend.position = "bottom",
+        legend.text = element_text(size=3))
+```
+
+
+```{r}
+tr1 <- cbind(as.data.frame(trn), 
+             st_coordinates(trn)) |> 
+  select(X, Y, X1, X2, X3, X4, X5, X6) 
+```
+
+
+```{r}
+test1 <- as.data.frame(rs) |> 
+  transmute(X=x, Y=y, X1, X2, X3, X4, X5, X6)
+```
+
+
+```{r}
+rs$cls1 = knn(tr1, test1, trn$cl, k = 5)
+```
+
+```{r}
+rs
+```
+
+
+```{r}
+tr2 <- cbind(as.data.frame(trn), st_coordinates(trn)) |> 
+  transmute(X, Y, X2=X^2, Y2=Y^2, XY=X*Y, X1, X2, X3, X4, X5, X6)
+```
+
+
+```{r}
+test2 <- as.data.frame(rs) |> 
+  transmute(X=x, Y=y, X2=X^2, Y2=Y^2, XY=X*Y, X1, X2, X3, X4, X5, X6)
+```
+
+
+```{r}
+rs$cls2 = knn(tr2, test2, trn$cl, k = 5)
+```
+
+
+```{r}
+rs[c("cls", "cls1", "cls2")] |> merge() |> plot()
+```
+
+Soultions: <https://edzer.github.io/sdsr_exercises/>
+
 
 ## Meeting Videos {-}
 
