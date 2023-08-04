@@ -45,7 +45,7 @@ nc %>% names
 ```{r}
 nc %>%
   select(SID74, BIR74, NWBIR74) %>%
-  head
+  head()
 ```
 
 This type of data can be manipulated as needed to make the model analysis.
@@ -53,7 +53,7 @@ This type of data can be manipulated as needed to make the model analysis.
 ```{r}
 nc1 <- nc |> mutate(SID = SID74 / BIR74, NWB = NWBIR74 / BIR74)
 
-nc1 %>% select(SID, NWB) %>% head
+nc1 %>% select(SID, NWB) %>% head()
 ```
 
 Making a model with spatial data is as the same as with dealing with dataframes. 
