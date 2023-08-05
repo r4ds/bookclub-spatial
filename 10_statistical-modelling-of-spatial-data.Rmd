@@ -304,8 +304,8 @@ trn$cls[c(8, 14, 15, 18, 19)] <- "water"
 
 ```{r}
 library(class)
-tr <- as.data.frame(trn) |> select(X1, X2, X3, X4, X5, X6) 
-test <- as.data.frame(rs) |> select(X1, X2, X3, X4, X5, X6) 
+tr <- as.data.frame(trn) |> dplyr::select(X1, X2, X3, X4, X5, X6) 
+test <- as.data.frame(rs) |> dplyr::select(X1, X2, X3, X4, X5, X6) 
 ```
 
 
@@ -361,7 +361,7 @@ nc1$prediction_2 <- lm2 |> predict(nc4)
 
 ```{r}
 nc5 <- nc1 %>%
-  select(prediction_0,prediction_1,prediction_2) |>
+  dplyr::select(prediction_0,prediction_1,prediction_2) |>
   #pivot_longer(cols = c("pr0","pr1","pr2"))%>%
   st_as_stars() |> 
   merge() 
@@ -385,7 +385,7 @@ ggplot()+
 ```{r}
 tr1 <- cbind(as.data.frame(trn), 
              st_coordinates(trn)) |> 
-  select(X, Y, X1, X2, X3, X4, X5, X6) 
+  dplyr::select(X, Y, X1, X2, X3, X4, X5, X6) 
 ```
 
 
