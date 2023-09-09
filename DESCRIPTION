@@ -13,8 +13,10 @@ Imports:
     class,
     colorspace,
     cubelyr,
+    dbscan,
     dplyr,
     ggplot2,
+    igraph,
     maps,
     MASS,
     randomForest,
@@ -23,9 +25,12 @@ Imports:
     rnaturalearthdata,
     s2,
     sf,
+    spatialreg,
     spDataLarge,
+    spdep,
     stars,
     tidyr,
+    tmap,
     units,
     xts
 Remotes:
