@@ -11,6 +11,7 @@
 ## Theory
 
 `Tobler’s first law of geography`
+
 > “Everything is related to everything else, but near things are more related than distant things”
 
 Recalling `John Snow's` belief that the cause of cholera was water-borne. 
@@ -19,14 +20,18 @@ In summary, `spatial autocorrelation` is the degree to which the values of a var
 
 ### Moran's I 
 
-`Moran's Test $I$` helps us understand if this similarity (nearby locations are more similar to each other than to distant locations) is statistically significant or just due to chance.
+`Moran's Test` $I$ helps us understand if this similarity (nearby locations are more similar to each other than to distant locations) is statistically significant or just due to chance.
 
 It will provide a p-value, if the p-value is low (typically less than 0.05), there is significant spatial autocorrelation in the data, or a non-random pattern.
 
 $$I=\frac{n\sum_{(2)}{w_{ij}z_iz_j}}{S_0\sum_{i=1}^n{z_i^2}}$$
+
 - $z_i=x_i-\bar{x}$
+
 - $\bar{x}=\sum_{i=1}^n{x_i/n}$
+
 - $w_{ij}=\text{spatial weights}$
+
 - $S_0= \sum_{(2)}{w_{ij}}$
 
 
@@ -54,7 +59,7 @@ pol_pres15 %>%
   head
 ```
 
-```{r}
+```{r message=FALSE,warning=FALSE}
 library(tidyverse)
 map1 <- ggplot(pol_pres15) +
   geom_sf(aes(geometry=geometry,fill=types),
@@ -133,8 +138,7 @@ $$\left\{\begin{matrix}
 x |> 
     moran.test(lw_q_B, #Spatial weights  
                randomisation = FALSE,
-               alternative = "two.sided") #|> # p>0.05
-    # glance_htest()
+               alternative = "two.sided") 
 ```
 
 Now see what happens if we use our data and add a gentle trend.
@@ -157,10 +161,7 @@ t <- coords |>
     (function(x) x/1000)()
 ```
 
-```{r}
-#| echo: false
-#| include: false
-#| eval: false
+```{r echo=FALSE,include=FALSE,eval=FALSE}
 coords |> 
     st_coordinates()%>%
   subset(select = 1)%>%
@@ -179,8 +180,7 @@ x_t <- (x + beta * t)
 x_t |> 
     moran.test(lw_q_B, 
                randomisation = FALSE,
-               alternative = "two.sided") #|> 
-   #glance_htest()
+               alternative = "two.sided") 
 
 ```
 
@@ -194,8 +194,7 @@ Here we apply the **Moran's I test for residual spatial autocorrelation** to a l
 ```{r}
 lm(x_t ~ t) |> 
     lm.morantest(lw_q_B, 
-                 alternative = "two.sided") #|> 
-    #glance_htest()
+                 alternative = "two.sided") 
 ```
 
 
@@ -210,11 +209,8 @@ lm(x_t ~ t) |>
 
 The **BB join count statistic for k-coloured factors** count test for spatial autocorrelation using a spatial weights matrix in weights list form for testing whether same-colour joins occur more frequently than would be expected if the zones were labelled in a spatially random way.
 
-
-```{r}
-#| eval: false
-?joincount.test
-```
+    ?joincount.test
+    ?joincount.multi
 
 
 ```{r}
@@ -289,8 +285,7 @@ I_turnout <- pol_pres15 |>
 ```{r}
 options(scipen = 999)
 I_turnout |> 
-  moran.test(listw = lw_q_B, randomisation = FALSE) #|> 
-    #glance_htest()
+  moran.test(listw = lw_q_B, randomisation = FALSE) 
 ```
 
 `lm.morantest` extracts the residuals used for testing to compare with the standard test.
@@ -343,13 +338,15 @@ Local measures are used to identify clusters or patterns in spatial data at a lo
 
 ## The rgeoda package
 
-```{r}
+```{r message=FALSE,warning=FALSE}
 library(rgeoda)
 Geoda_w <- queen_weights(pol_pres15)
 summary(Geoda_w)
 ```
 
-
+    ?queen_weights
+    
+    
 **Local Multivariate Geary Statistics**
 
     ?local_multigeary
