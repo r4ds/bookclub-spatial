@@ -294,12 +294,16 @@ Spatial networks are usually composed of linear elements (`LINESTRING`).
 
 ### Cohort 1 {-}
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/-UH9-m47a80")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:24:59	Derek Sollberger:	maybe st_is_empty(x)
+00:37:44	Derek Sollberger:	some country bounding boxes are very big to include their islands, so wrap_dateline might help quickly form separate objects
+00:38:25	Oluwafemi Oyedele:	Reacted to "some country boundin…" with 👍
+00:53:43	Keuntae Kim:	Reacted to "some country boundin..." with 👍
+01:03:29	Mateo Vega:	Thanks, bye everyone!
 ```
 </details>

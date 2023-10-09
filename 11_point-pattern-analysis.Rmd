@@ -13,12 +13,17 @@
 
 ### Cohort 1 {-}
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/D4G1-Pg0-cc")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:09:39	Keuntae Kim:	start
+00:15:42	Keuntae Kim:	https://www.amazon.com/Spatial-Point-Patterns-Applications-Interdisciplinary/dp/1482210207/ref=sr_1_5?crid=16KIOMXVHZ3RG&keywords=spatial+point+analysis&qid=1691248125&sprefix=spatial+point+analysis%2Caps%2C107&sr=8-5&ufe=app_do%3Aamzn1.fos.006c50ae-5d4c-4777-9bc0-4513d670b6bc
+00:18:25	Federica Gazzelloni:	Interesting
+00:18:41	Federica Gazzelloni:	Extra resource: https://bookdown.org/lexcomber/brunsdoncomber2e/
+00:51:41	Keuntae Kim:	https://www.tandfonline.com/doi/full/10.1080/10511482.2020.1838598
+00:52:42	Federica Gazzelloni:	stop
 ```
 </details>

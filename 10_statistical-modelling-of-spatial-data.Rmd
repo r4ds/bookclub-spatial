@@ -13,12 +13,23 @@
 
 ### Cohort 1 {-}
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/iVMgUV_9-Vs")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:06:39	Keuntae’s iPad:	start
+00:10:16	Federica Gazzelloni:	https://geodacenter.github.io/data-and-lab/sids/
+00:10:31	Federica Gazzelloni:	https://r-spatial.github.io/spdep/articles/sids.html
+00:10:40	Federica Gazzelloni:	https://geodacenter.github.io/data-and-lab/
+00:21:54	Keuntae’s iPad:	I cannot hear your voice clearly.
+00:25:13	Federica Gazzelloni:	https://spatialsample.tidymodels.org/
+00:25:18	Federica Gazzelloni:	https://cran.r-project.org/web/packages/CAST/vignettes/cast01-CAST-intro.html
+00:25:23	Federica Gazzelloni:	https://mlr3spatial.mlr-org.com/
+00:25:28	Federica Gazzelloni:	https://mlr3spatiotempcv.mlr-org.com/articles/mlr3spatiotempcv.html
+01:04:58	Federica Gazzelloni:	end
+01:05:03	Derek Sollberger (he/his):	thank you!
+01:05:35	Federica Gazzelloni:	https://edzer.github.io/sdsr_exercises/
 ```
 </details>

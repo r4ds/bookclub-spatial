@@ -642,12 +642,18 @@ read_sf(file) |>
 
 ### Cohort 1 {-}
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/8zcxWYrRC8k")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:09:01	Keuntae’s iPad:	Just wait for a couple of min. then we start
+00:09:53	Keuntae’s iPad:	We start 11:04
+00:11:34	Keuntae’s iPad:	I think we can start
+00:11:49	Keuntae’s iPad:	start
+00:36:09	Federica Gazzelloni:	Presentation: https://dsollbergerquarto.netlify.app/posts/spatialr/07_introduction-to-sf-and-stars.html
+00:36:54	Keuntae’s iPad:	Reacted to "Presentation: https:…" with 👍
+01:06:46	Derek Sollberger (he/him):	end
 ```
 </details>

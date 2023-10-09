@@ -203,12 +203,18 @@ sf::st_is_valid(Antarctica_map_D)
 
 ### Cohort 1 {-}
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/j7tcWLlAEwk")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:03:42	Keuntae Kim:	Hello.
+00:05:19	Derek Sollberger (he/him):	https://r4ds.github.io/bookclub-spatial/spherical-geometries.html
+00:05:28	Keuntae Kim:	We wait until Gabby join the meeting.
+00:06:18	Keuntae Kim:	I was not able to prepare for the presentation because I was so busy this week, so I will explain Chap 5 by looking at the book.
+00:07:36	Keuntae Kim:	We wait until 11:05.
+00:10:54	Keuntae Kim:	start
+00:32:26	Derek Sollberger (he/him):	end
 ```
 </details>

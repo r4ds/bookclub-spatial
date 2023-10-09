@@ -13,12 +13,26 @@
 
 ### Cohort 1 {-}
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/9khxHHazCLQ")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:03:00	kkim315:	start
+00:08:06	kkim315:	https://edzer.github.io/sdsr_exercises/13.html
+00:18:51	kkim315:	library(RCurl)
+
+aq <- read.csv("C:\\Users\\kimpr\\OneDrive\\Desktop\\aq.csv")
+
+r <- list()
+for (i in 1:dim(aq[1])) {
+  url <- aq$links[i]
+  x <- getURL(url)
+  out <- lapply(x, function(x) read.csv(textConnection(x)))
+  r <- append(r, out)
+}
+00:39:40	kkim315:	https://spacetimewithr.org/
+00:44:06	kkim315:	end
 ```
 </details>

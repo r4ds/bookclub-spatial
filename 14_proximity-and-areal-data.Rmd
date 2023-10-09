@@ -13,12 +13,14 @@
 
 ### Cohort 1 {-}
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/-NbmHj0pToU")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:03:05	Derek Sollberger (he/him):	https://r4ds.github.io/bookclub-spatial/proximity-and-areal-data.html
+00:09:00	Derek Sollberger (he/him):	start
+01:04:28	Derek Sollberger (he/him):	end
 ```
 </details>

@@ -13,12 +13,35 @@
 
 ### Cohort 1 {-}
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/j7tcWLlAEwk")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:03:42	Keuntae Kim:	Hello.
+00:05:19	Derek Sollberger (he/him):	https://r4ds.github.io/bookclub-spatial/spherical-geometries.html
+00:05:28	Keuntae Kim:	We wait until Gabby join the meeting.
+00:06:18	Keuntae Kim:	I was not able to prepare for the presentation because I was so busy this week, so I will explain Chap 5 by looking at the book.
+00:07:36	Keuntae Kim:	We wait until 11:05.
+00:10:54	Keuntae Kim:	start
+00:32:26	Derek Sollberger (he/him):	end
+```
+</details>
+
+`r knitr::include_url("https://www.youtube.com/embed/pPl-a9bQjto")`
+
+<details>
+<summary> Meeting chat log </summary>
+
+```
+00:06:28	Keuntae Kim:	we will start at 11:03
+00:06:56	Keuntae Kim:	just wait for two more min. for someone to come to the study group meeting.
+00:07:43	Keuntae Kim:	start
+00:34:33	Derek Sollberger (he/his):	(in American counties) there are cities and the unincorporated areas outside of cities.  A city's planning office creates data sets and shapefiles for the incorporated area (e.g. land use, building types), but probably does not extend to the unincorporated lands, so the area beyond is simply called "unincorporated" instead of the attributes
+00:51:30	Derek Sollberger (he/his):	thank you for the thorough examples
+00:51:41	Gabby:	Reacted to "thank you for the th..." with 👍
+00:57:12	Keuntae Kim:	https://www.adb.org/publications/small-area-estimation-guide-national-statistics-offices
+01:02:22	Keuntae Kim:	end
 ```
 </details>

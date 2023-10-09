@@ -13,12 +13,24 @@
 
 ### Cohort 1 {-}
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/MF5XN-0n-K4")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:06:55	Gabby Palomo Munoz:	I've participated in other book clubs before
+00:07:06	Derek Sollberger:	I have been in R4DS  book clubs before
+00:07:09	Gabby Palomo Munoz:	I mean from R4DS of course
+00:14:18	Gabby Palomo Munoz:	Could you zoom in a little?
+00:14:35	Gabby Palomo Munoz:	yes
+00:14:37	Gabby Palomo Munoz:	thanks
+00:14:46	Gabby Palomo Munoz:	yes
+00:15:00	Gabby Palomo Munoz:	We can also annotate
+00:15:02	Gabby Palomo Munoz:	LOL
+00:16:01	Derek Sollberger:	https://cran.r-project.org/web/views/Spatial.html
+00:34:22	Derek Sollberger:	Are mapview and leaflet similar? different?
+00:47:26	Gabby Palomo Munoz:	No thanks
+00:53:55	Gabby Palomo Munoz:	No everything is clear
 ```
 </details>

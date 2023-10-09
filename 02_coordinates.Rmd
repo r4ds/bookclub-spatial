@@ -13,12 +13,14 @@
 
 ### Cohort 1 {-}
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/v1RSS6umzpU")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:02:13	Keuntae Kim:	hello?
+00:43:06	Keuntae Kim:	https://docs.geotools.org/stable/javadocs/org/opengis/referencing/doc-files/WKT.html
+00:44:20	Keuntae Kim:	https://epsg.io/
 ```
 </details>

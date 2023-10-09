@@ -13,12 +13,14 @@
 
 ### Cohort 1 {-}
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/Bjoz2mxjXEs")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:05:19	Keuntae Kim:	start
+00:15:35	Derek Sollberger (he/his):	fun fact: in PostGRE SQL, the "double quotes" and 'single quotes' matter more (not interchangeable)
+00:35:01	Keuntae Kim:	end
 ```
 </details>

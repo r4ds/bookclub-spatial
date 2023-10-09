@@ -13,12 +13,14 @@
 
 ### Cohort 1 {-}
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/0g4suMJKKm8")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:04:44	kkim315:	start
+00:38:52	kkim315:	end
+00:40:32	kkim315:	https://www.spatialanalysisonline.com/
 ```
 </details>

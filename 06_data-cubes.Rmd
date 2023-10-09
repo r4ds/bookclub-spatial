@@ -180,14 +180,19 @@ We deal with datasets with one or more space dimensions and zero or more time di
 
 ### Cohort 1 {.unnumbered}
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/OG_6ZaHJgC4")`
 
 <details>
 
 <summary>Meeting chat log</summary>
 
 ```         
-LOG
+00:11:29	Federica Gazzelloni:	start
+00:25:44	Derek Sollberger (he/him):	Is LANDSAT satellite data multi-spectral?
+00:39:53	Keuntae Kim:	Normalized Difference Vegetation Index
+00:40:28	Keuntae Kim:	% of surface green area
+01:06:40	Keuntae Kim:	👍
+01:06:42	Gabby:	stop
 ```
 
 </details>

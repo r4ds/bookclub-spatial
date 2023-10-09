@@ -11,7 +11,7 @@ As we read, we are producing [notes about the book](https://r4ds.io/spatial).
 
 If you would like to present, please see the sign-up sheet for your cohort (linked below, and pinned in the [#book_club-spatial](https://rfordatascience.slack.com/archives/C0532SZ3D24) channel on Slack)!
 
-- [Cohort 1](https://docs.google.com/spreadsheets/d/1oAkEvYB2XHv7xyDEwLAieHCMTaqz_ZyyttdK_9xU770/edit?usp=sharing) (started 2023-04-22, facilitated by Keuntae Kim): [Saturdays, 10:00 AM CST/CDT](https://www.timeanddate.com/worldclock/converter.html?iso=20230422T160000&p1=24&p2=1440) | [meeting videos](https://youtube.com/playlist?list=PL3x6DOfs2NGhADsCdfFtmaUsMglp2WDTp)
+- Cohort 1 (started 2023-04-22, finished 2023-10-07): [meeting videos](https://youtube.com/playlist?list=PL3x6DOfs2NGhADsCdfFtmaUsMglp2WDTp)
 
 <hr>
 
