@@ -20,8 +20,8 @@
 
 ```
 00:06:55	Gabby Palomo Munoz:	I've participated in other book clubs before
-00:07:06	Derek Sollberger:	I have been in R4DS  book clubs before
-00:07:09	Gabby Palomo Munoz:	I mean from R4DS of course
+00:07:06	Derek Sollberger:	I have been in DSLC  book clubs before
+00:07:09	Gabby Palomo Munoz:	I mean from DSLC of course
 00:14:18	Gabby Palomo Munoz:	Could you zoom in a little?
 00:14:35	Gabby Palomo Munoz:	yes
 00:14:37	Gabby Palomo Munoz:	thanks
